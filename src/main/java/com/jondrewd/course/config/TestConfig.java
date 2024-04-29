@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.jondrewd.course.entities.Category;
 import com.jondrewd.course.entities.Order;
+import com.jondrewd.course.entities.OrderItem;
 import com.jondrewd.course.entities.Product;
 import com.jondrewd.course.entities.User;
 import com.jondrewd.course.entities.enums.OrderStatus;
 import com.jondrewd.course.repositories.CategoryRepository;
+import com.jondrewd.course.repositories.OrderItemRepository;
 import com.jondrewd.course.repositories.OrderRepository;
 import com.jondrewd.course.repositories.ProductRepository;
 import com.jondrewd.course.repositories.UserRepository;
@@ -30,6 +32,9 @@ public class TestConfig implements CommandLineRunner{
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -57,6 +62,20 @@ public class TestConfig implements CommandLineRunner{
         orderRepository.saveAll(Arrays.asList(o1,o2,o3));
         categoryRepository.saveAll(Arrays.asList(c1,c2,c3));
         productRepository.saveAll(Arrays.asList(p1,p2,p3));
+        
+        p1.getCategories().add(c2);
+        p2.getCategories().add(c1);
+        p2.getCategories().add(c3);
+        p3.getCategories().add(c1);
+
+        productRepository.saveAll(Arrays.asList(p1,p2,p3));
+
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p2, 2, p2.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p3, 2, p3.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
         
     }
 
