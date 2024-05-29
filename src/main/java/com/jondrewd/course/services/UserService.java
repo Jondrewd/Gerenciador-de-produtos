@@ -12,7 +12,8 @@ import com.jondrewd.course.entities.User;
 import com.jondrewd.course.repositories.UserRepository;
 import com.jondrewd.course.services.exceptions.DatabaseException;
 import com.jondrewd.course.services.exceptions.ResourceNotFoundException;
-import com.jondrewd.course.services.exceptions.EntityNotFoundException;
+
+import jakarta.persistence.EntityExistsException;
 
 @Component
 public class UserService {
@@ -47,8 +48,8 @@ public class UserService {
             User entity = repository.getReferenceById(id);
             updateData(entity, obj);
             return repository.save(entity);
-        } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException(id)
+        } catch (EntityExistsException e) {
+            throw new ResourceNotFoundException(id);
          
         }
     }
